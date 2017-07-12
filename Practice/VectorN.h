@@ -3,7 +3,9 @@
 #include <cmath>
 using namespace std;
 
-class vector
+#define epsilon 0.000001
+
+class VectorN
 {
 private:
 	double* p;
@@ -15,51 +17,51 @@ public:
 	////////////////////////////////
 
 	// 构造函数，生成n维全零向量
-	vector(int n = 0);
+	VectorN(int n = 0);
 	// 构造函数，用数组生成向量
 	template<size_t n>
-	vector(const double (&array)[n]);
+	VectorN(const double (&array)[n]);
 	// 拷贝构造函数
-	vector(const vector& v);
+	VectorN(const VectorN& v);
 	// 析构函数
-	~vector();
+	~VectorN();
 
 	///////////////////////
 	// Operator Overload //
 	///////////////////////
 
 	// 重载输出运算符
-	friend ostream& operator<<(ostream &output, const vector& v);
+	friend ostream& operator<<(ostream &output, const VectorN& v);
 	// 重载括号运算符
 	double operator()(int i) const;
 	// 重载赋值运算符
-	vector& operator=(const vector& v);
+	VectorN& operator=(const VectorN& v);
 	// 重载负号运算
-	vector operator-() const;
+	VectorN operator-() const;
 	// 重载加法运算
-	vector operator+(const vector& v) const;
+	VectorN operator+(const VectorN& v) const;
 	// 重载减法运算
-	vector operator-(const vector& v) const;
+	VectorN operator-(const VectorN& v) const;
 	// 重载数乘运算
-	vector operator*(const double& k) const;
+	VectorN operator*(const double& k) const;
 	// 重载数乘运算
-	friend vector operator*(const double& k, const vector& v);
+	friend VectorN operator*(const double& k, const VectorN& v);
 	// 重载除法运算
-	vector operator/(const double& k) const;
+	VectorN operator/(const double& k) const;
 	// 重载加等运算
-	vector& operator+=(const vector& v);
+	VectorN& operator+=(const VectorN& v);
 	// 重载减等运算
-	vector& operator-=(const vector& v);
+	VectorN& operator-=(const VectorN& v);
 	// 重载乘等运算
-	vector& operator*=(const double& k);
+	VectorN& operator*=(const double& k);
 	// 重载除等运算
-	vector& operator/=(const double& k);
+	VectorN& operator/=(const double& k);
 	// 重载内积运算
-	double operator*(const vector& v) const;
+	double operator*(const VectorN& v) const;
 	// 重载相等运算
-	bool operator==(const vector& v) const;
+	bool operator==(const VectorN& v) const;
 	// 重载不等运算符
-	bool operator!=(const vector& v) const;
+	bool operator!=(const VectorN& v) const;
 
 	//////////////////////
 	// trivial function //
