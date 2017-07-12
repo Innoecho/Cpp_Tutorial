@@ -5,10 +5,11 @@ using namespace std;
 
 #define epsilon 0.000001
 
+template <class T>
 class VectorN
 {
 private:
-	double* p;
+	T* p;
 	int dim = 0;
 public:
 
@@ -16,52 +17,63 @@ public:
 	// Constructor and Destructor //
 	////////////////////////////////
 
-	// 构造函数，生成n维全零向量
-	VectorN(int n = 0);
-	// 构造函数，用数组生成向量
+	// 构造函数
+	VectorN<T>(int n);
+	// 从数组构造向量
+	// 黑科技：将数组引用的数组大小声明为模板参数
 	template<size_t n>
-	VectorN(const double (&array)[n]);
+	VectorN<T>(T const(&num)[n]);
 	// 拷贝构造函数
-	VectorN(const VectorN& v);
+	VectorN<T>(const VectorN<T>& v);
 	// 析构函数
-	~VectorN();
+	~VectorN<T>();
 
 	///////////////////////
 	// Operator Overload //
 	///////////////////////
 
 	// 重载输出运算符
-	friend ostream& operator<<(ostream &output, const VectorN& v);
+	template <class C>
+	friend ostream& operator<<(ostream &output, const VectorN<C>& v);
 	// 重载括号运算符
-	double operator()(int i) const;
+	T operator()(int i) const;
 	// 重载赋值运算符
-	VectorN& operator=(const VectorN& v);
+	VectorN<T>& operator=(const VectorN<T>& v);
 	// 重载负号运算
-	VectorN operator-() const;
+	VectorN<T> operator-() const;
 	// 重载加法运算
-	VectorN operator+(const VectorN& v) const;
+	VectorN<T> operator+(const VectorN<T>& v) const;
 	// 重载减法运算
-	VectorN operator-(const VectorN& v) const;
+	VectorN<T> operator-(const VectorN<T>& v) const;
 	// 重载数乘运算
-	VectorN operator*(const double& k) const;
+	VectorN<T> operator*(const T& k) const;
 	// 重载数乘运算
-	friend VectorN operator*(const double& k, const VectorN& v);
+	template <class C>
+	friend VectorN<C> operator*(const C& k, const VectorN<C>& v);
+	// {
+	// 	VectorN<T> ret(v.dim);
+	// 	for (int i = 0; i < v.dim; ++i)
+	// 	{
+	// 		ret.p[i] = k * v.p[i];
+	// 	}
+	// 	return ret;
+	// }
 	// 重载除法运算
-	VectorN operator/(const double& k) const;
+	VectorN<T> operator/(const T& k) const;
 	// 重载加等运算
-	VectorN& operator+=(const VectorN& v);
+	VectorN<T>& operator+=(const VectorN<T>& v);
 	// 重载减等运算
-	VectorN& operator-=(const VectorN& v);
+	VectorN<T>& operator-=(const VectorN<T>& v);
 	// 重载乘等运算
-	VectorN& operator*=(const double& k);
+	VectorN<T>& operator*=(const T& k);
 	// 重载除等运算
-	VectorN& operator/=(const double& k);
+	VectorN<T>& operator/=(const T& k);
 	// 重载内积运算
-	double operator*(const VectorN& v) const;
+	T operator*(const VectorN<T>& v) const;
 	// 重载相等运算
-	bool operator==(const VectorN& v) const;
+	bool operator==(const VectorN<T>& v) const;
 	// 重载不等运算符
-	bool operator!=(const VectorN& v) const;
+	bool operator!=(const VectorN<T>& v) const;
 
 	//////////////////////
 	// trivial function //
@@ -72,7 +84,7 @@ public:
 	// 显示向量
 	void display() const;
 	// 向量范数
-	double norm() const;
+	T norm() const;
 	// 向量归一化
 	void normalize();
 };
