@@ -47,6 +47,7 @@ VectorN<T>::~VectorN()
 // Operator Overload //
 ///////////////////////
 
+// 重载输出运算符
 template <class C>
 ostream& operator<<(ostream &output, const VectorN<C>& v)
 {
@@ -61,7 +62,6 @@ ostream& operator<<(ostream &output, const VectorN<C>& v)
 	output << ")";
 	return output;
 }
-
 // 重载下标运算
 template <class T>
 T VectorN<T>::operator()(int i) const
@@ -89,17 +89,6 @@ VectorN<T>& VectorN<T>::operator=(const VectorN<T>& v)
 	}
 	return *this;
 }
-// 重载负号运算
-template <class T>
-VectorN<T> VectorN<T>::operator-() const
-{
-	VectorN<T> ret(dim);
-	for (int i = 0; i < dim; ++i)
-	{
-		ret.p[i] = -p[i];
-	}
-	return ret;
-}
 // 重载加法运算
 template <class T>
 VectorN<T> VectorN<T>::operator+(const VectorN<T>& v) const
@@ -108,17 +97,6 @@ VectorN<T> VectorN<T>::operator+(const VectorN<T>& v) const
 	for (int i = 0; i < dim; ++i)
 	{
 		ret.p[i] = p[i] + v.p[i];
-	}
-	return ret;
-}
-// 重载减法运算
-template <class T>
-VectorN<T> VectorN<T>::operator-(const VectorN<T>& v) const
-{
-	VectorN<T> ret(dim);
-	for (int i = 0; i < dim; ++i)
-	{
-		ret.p[i] = p[i] - v.p[i];
 	}
 	return ret;
 }
@@ -137,62 +115,52 @@ VectorN<T> VectorN<T>::operator*(const T& k) const
 template <class C>
 VectorN<C> operator*(const C& k, const VectorN<C>& v)
 {
-	VectorN<C> ret(v.dim);
-	for (int i = 0; i < v.dim; ++i)
-	{
-		ret.p[i] = k * v.p[i];
-	}
-	return ret;
+	return v * k;
+}
+// 重载负号运算
+template <class T>
+VectorN<T> VectorN<T>::operator-() const
+{
+	return this->operator*(-1);
+}
+// 重载减法运算
+template <class T>
+VectorN<T> VectorN<T>::operator-(const VectorN<T>& v) const
+{
+	return this->operator+(-v);
 }
 // 重载除法运算
 template <class T>
 VectorN<T> VectorN<T>::operator/(const T& k) const
 {
-	VectorN<T> ret(dim);
-	for (int i = 0; i < dim; ++i)
-	{
-		ret.p[i] = p[i] / k;
-	}
-	return ret;
+	return this->operator*(1.0 / k);
 }
 // 重载加等运算
 template <class T>
 VectorN<T>& VectorN<T>::operator+=(const VectorN<T>& v)
 {
-	for (int i = 0; i < dim; ++i)
-	{
-		p[i] += v.p[i];
-	}
+	*this = *this + v;
 	return *this;
 }
 // 重载减等运算
 template <class T>
 VectorN<T>& VectorN<T>::operator-=(const VectorN<T>& v)
 {
-	for (int i = 0; i < dim; ++i)
-	{
-		p[i] -= v.p[i];
-	}
+	*this = *this - v;
 	return *this;
 }
 // 重载乘等运算
 template <class T>
 VectorN<T>& VectorN<T>::operator*=(const T& k)
 {
-	for (int i = 0; i < dim; ++i)
-	{
-		p[i] *= k;
-	}
+	*this = *this * k;
 	return *this;
 }
 // 重载除等运算
 template <class T>
 VectorN<T>& VectorN<T>::operator/=(const T& k)
 {
-	for (int i = 0; i < dim; ++i)
-	{
-		p[i] /= k;
-	}
+	*this = *this / k;
 	return *this;
 }
 // 重载内积运算
@@ -232,12 +200,13 @@ bool VectorN<T>::operator!=(const VectorN<T>& v) const
 
 // 全零向量
 template <class T>
-void VectorN<T>::zero()
+VectorN<T>& VectorN<T>::zero()
 {
 	for (int i = 0; i < dim; ++i)
 	{
 		p[i] = 0;
 	}
+	return *this;
 }
 // 显示向量
 template <class T>
@@ -257,23 +226,14 @@ void VectorN<T>::display() const
 template <class T>
 T VectorN<T>::norm() const
 {
-	T ret = 0;
-	for (int i = 0; i < dim; ++i)
-	{
-		ret += p[i] * p[i];
-	}
-	ret = sqrt(ret);
-	return ret;
+	return sqrt(*this * *this);
 }
 // 向量归一化
 template <class T>
-void VectorN<T>::normalize()
+VectorN<T>& VectorN<T>::normalize()
 {
-	T n = norm();
-	for (int i = 0; i < dim; ++i)
-	{
-		p[i] = p[i] / n;
-	}
+	*this  = *this / this->norm();
+	return *this;
 }
 
 
@@ -289,9 +249,10 @@ int main()
 	cout << "    y = " << y << endl;
 	cout << "x + y = " << x + y << endl;
 	cout << "x - y = " << x - y << endl;
-	cout << "x * 2 = " << x * 2 << endl;
+	cout << "x * 2 = " << 2.0 * x << endl;
 	cout << "x / 2 = " << x / 2 << endl;
-	cout << "||x|| = " << x.norm() << endl;
+	cout << "  |x| = " << x.norm() << endl;
+	cout << "x/|x| = " << (x.normalize()) << endl;
 	cout << "x * y = " << x*y << endl;
 	cout << boolalpha;
 	cout << "x == y? " << (x == y) << endl;

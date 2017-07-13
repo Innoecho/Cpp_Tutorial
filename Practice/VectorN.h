@@ -80,11 +80,11 @@ public:
 	//////////////////////
 
 	// 将向量转换为全零向量
-	void zero();
+	VectorN<T>& zero();
 	// 显示向量
 	void display() const;
 	// 向量范数
 	T norm() const;
 	// 向量归一化
-	void normalize();
+	VectorN<T>& normalize();
 };
