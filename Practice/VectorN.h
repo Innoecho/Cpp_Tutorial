@@ -219,29 +219,25 @@ VectorN<T> VectorN<T>::operator/(const T& k) const
 template <typename T>
 VectorN<T>& VectorN<T>::operator+=(const VectorN<T>& v)
 {
-	*this = *this + v;
-	return *this;
+	return *this = *this + v;
 }
 // 重载减等运算
 template <typename T>
 VectorN<T>& VectorN<T>::operator-=(const VectorN<T>& v)
 {
-	*this = *this - v;
-	return *this;
+	return *this = *this - v;
 }
 // 重载乘等运算
 template <typename T>
 VectorN<T>& VectorN<T>::operator*=(const T& k)
 {
-	*this = *this * k;
-	return *this;
+	return *this = *this * k;
 }
 // 重载除等运算
 template <typename T>
 VectorN<T>& VectorN<T>::operator/=(const T& k)
 {
-	*this = *this / k;
-	return *this;
+	return *this = *this / k;
 }
 // 重载内积运算
 template <typename T>
@@ -313,8 +309,7 @@ T VectorN<T>::norm() const
 template <typename T>
 VectorN<T>& VectorN<T>::normalize()
 {
-	*this  = *this / this->norm();
-	return *this;
+	return *this  = *this / this->norm();
 }
 
 int VectorNTest()

@@ -76,8 +76,6 @@ public:
 	VectorN<T> row(int i) const;
 	// get col
 	VectorN<T> col(int j) const;
-	// gaussian elimination method
-	Matrix<T> gauss() const;
 
 	/////////////////////////////
 	// generate special matrix //
@@ -244,29 +242,25 @@ Matrix<T> Matrix<T>::operator/(const T& k) const
 template <typename T>
 Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& v)
 {
-	*this = *this + v;
-	return *this;
+	return *this = *this + v;
 }
 // 重载减等运算
 template <typename T>
 Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& v)
 {
-	*this = *this - v;
-	return *this; 
+	return *this = *this - v;
 }
 // 重载乘等运算
 template <typename T>
 Matrix<T>& Matrix<T>::operator*=(const T& k)
 {
-	*this = *this * k;
-	return *this;
+	return *this = *this * k;
 }
 // 重载除等运算
 template <typename T>
 Matrix<T>& Matrix<T>::operator/=(const T& k)
 {
-	*this = *this / k;
-	return *this;
+	return *this = *this / k;
 }
 // 重载矩阵乘法
 template <typename T>
@@ -324,24 +318,6 @@ VectorN<T> Matrix<T>::col(int j) const
 	{
 		ret(i) = p[i-1](j);
 	}
-	return ret;
-}
-// gaussian elimination method
-template <typename T>
-Matrix<T> Matrix<T>::gauss() const
-{
-	Matrix<T> ret = *this;
-	std::cout << ret << std::endl;
-	int min = nRow<nCol?nRow:nCol;
-	for (int i = 1; i < min; ++i)
-	{
-		for (int j = i+1; j <= nRow; ++j)
-		{
-			ret.row_ref(j) -= ret.row(i) * (ret(j,i)/ret(i,i));
-		}
-		std::cout << ret << std::endl;
-	}
-	std::cout << "Over" << std::endl;
 	return ret;
 }
 
